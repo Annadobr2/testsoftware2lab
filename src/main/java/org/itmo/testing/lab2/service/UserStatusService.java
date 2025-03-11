@@ -1,6 +1,7 @@
 package org.itmo.testing.lab2.service;
 
-
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Optional;
 
 public class UserStatusService {
@@ -25,7 +26,10 @@ public class UserStatusService {
     }
 
     public Optional<String> getUserLastSessionDate(String userId) {
-        UserAnalyticsService.Session lastSession = userAnalyticsService.getUserSessions(userId).getLast();
+
+//        List<Session> sessions = userAnalyticsService.getUserSessions(userId);
+//        UserAnalyticsService.Session lastSession = sessions.get(sessions.size() - 1);
+        UserAnalyticsService.Session lastSession = userAnalyticsService.getUserSessions(userId).get(userAnalyticsService.getUserSessions(userId).size() - 1);
         return Optional.of(lastSession.getLogoutTime().toLocalDate().toString());
     }
 }
