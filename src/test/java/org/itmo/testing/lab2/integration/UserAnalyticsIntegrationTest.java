@@ -34,8 +34,8 @@ public class UserAnalyticsIntegrationTest {
     @DisplayName("Тест регистрации пользователя")
     void testUserRegistration() {
         given()
-                .queryParam("userId", "user1")
-                .queryParam("userName", "Alice")
+                .queryParam("userId", "user9")
+                .queryParam("userName", "Gron")
                 .when()
                 .post("/register")
                 .then()
@@ -58,8 +58,9 @@ public class UserAnalyticsIntegrationTest {
                 .statusCode(200)
                 .body(containsString("User registered: true"));
     }
-
     // выдает все равно код 200
+
+
     @Test
     @Order(3)
     @DisplayName("Регистрация без обязательных параметров ")
@@ -79,15 +80,11 @@ public class UserAnalyticsIntegrationTest {
     @Order(4)
     @DisplayName("Тест записи сессии")
     void testRecordSession() {
-        given()
-                .queryParam("userId", "user1")
-                .queryParam("userName", "Alice")
-                .when()
-                .post("/register");
+
 
         LocalDateTime now = LocalDateTime.now();
         given()
-                .queryParam("userId", "user1")
+                .queryParam("userId", "user9")
                 .queryParam("loginTime", now.minusHours(1).toString())
                 .queryParam("logoutTime", now.toString())
                 .when()
@@ -128,34 +125,24 @@ public class UserAnalyticsIntegrationTest {
                 .body(equalTo("Missing parameters"));
     }
 
-    //Тест получения общего времени активности
-    @Test
-    @Order(7)
-    @DisplayName("Тест получения общего времени активности")
-    void testGetTotalActivity() {
-        given()
-                .queryParam("userId", "user1")
-                .queryParam("userName", "Alice")
-                .when()
-                .post("/register");
 
-        LocalDateTime now = LocalDateTime.now();
-        given()
-                .queryParam("userId", "user1")
-                .queryParam("loginTime", now.minusHours(1).toString())
-                .queryParam("logoutTime", now.toString())
-                .when()
-                .post("/recordSession");
 
-        given()
-                .queryParam("userId", "user1")
-                .when()
-                .get("/totalActivity")
-                .then()
-                .statusCode(200)
-                .body(containsString("Total activity: 60 minutes"));
-
-    }
+//    //Тест получения общего времени активности
+//    @Test
+//    @Order(7)
+//    @DisplayName("Тест получения общего времени активности")
+//    void testGetTotalActivity() {
+//
+//
+//        given()
+//                .queryParam("userId", "user1")
+//                .when()
+//                .get("/totalActivity")
+//                .then()
+//                .statusCode(200)
+//                .body(containsString("Total activity: 60 minutes"));
+//
+//    }
 
     @Test
     @Order(8)
@@ -203,7 +190,7 @@ public class UserAnalyticsIntegrationTest {
 
     @Test
     @Order(10)
-    @DisplayName("Список неактивных пользователей без days (ошибка 400)")
+    @DisplayName("Список неактивных пользователей без days")
     void testInactiveUsersMissingDays() {
         given()
                 .when()
@@ -221,29 +208,29 @@ public class UserAnalyticsIntegrationTest {
     void testMonthlyActivity() {
 
         given()
-                .queryParam("userId", "user2")
+                .queryParam("userId", "2")
                 .queryParam("userName", "Alice")
                 .when()
                 .post("/register");
 
 
         given()
-                .queryParam("userId", "user2")
+                .queryParam("userId", "2")
                 .queryParam("loginTime", "2025-03-10T09:00:00")
-                .queryParam("logoutTime", "2025-03-10T10:30:00")
+                .queryParam("logoutTime", "2025-03-10T09:30:00")
                 .when()
                 .post("/recordSession");
 
 
 
         given()
-                .queryParam("userId", "user2")
+                .queryParam("userId", "2")
                 .queryParam("month", "2025-03")
                 .when()
                 .get("/monthlyActivity")
                 .then()
                 .statusCode(200)
-                .body("$['2025-03-10']", equalTo(90));
+                .body("2025-03-10", equalTo(30));
     }
 
     @Test

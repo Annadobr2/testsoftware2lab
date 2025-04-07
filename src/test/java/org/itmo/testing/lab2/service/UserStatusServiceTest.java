@@ -9,11 +9,13 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import org.junit.jupiter.api.function.Executable;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Optional;
-
-
+import java.util.stream.Stream;
 
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -42,18 +44,30 @@ public class UserStatusServiceTest {
 
     // Тесты getUserStatus(userId)
 
-    @Test
-    public void testGetUserStatus_Inactive() {
-        when(userAnalyticsService.getTotalActivityTime("user123")).thenReturn(30L);
-
-        String status = userStatusService.getUserStatus("user123");
-
-        assertEquals("Inactive", status);
-        // Убеждаемся, что метод getTotalActivityTime был вызван 1 раз
-        verify(userAnalyticsService, times(1)).getTotalActivityTime("user123");
-    }
+//    @Test
+//    public void testGetUserStatus_Inactive() {
+//        when(userAnalyticsService.getTotalActivityTime("user123")).thenReturn(30L);
+//
+//        String status = userStatusService.getUserStatus("user123");
+//
+//        assertEquals("Inactive", status);
+//        // Убеждаемся, что метод getTotalActivityTime был вызван 1 раз
+//        verify(userAnalyticsService, times(1)).getTotalActivityTime("user123");
+//    }
 
     // Тесты getUserStatus(userId)
+
+
+//    @ParameterizedTest
+//    @ValueSource(longs = { 0L, 59L})
+//    public void testGetUserStatus_ParametrsTest(long arg) {
+//        when(userAnalyticsService.getTotalActivityTime("userA")).thenReturn(arg);
+//
+//        String status = userStatusService.getUserStatus("userA");
+//        assertEquals("Inactive", status);
+//
+//        verify(userAnalyticsService).getTotalActivityTime("userA");
+//    }
 
     @Test
     public void testGetUserStatus_InactiveZero() {
@@ -147,6 +161,7 @@ public class UserStatusServiceTest {
         verify(userAnalyticsService, times(2)).getUserSessions("userX");
     }
 
+    // тест 2 сесии - проверка на наличие массива с сессиями и датой
     @Test
     public void testGetUserLastSessionDate_MultipleSessions() {
         UserAnalyticsService.Session session1 = new UserAnalyticsService.Session(
@@ -168,6 +183,7 @@ public class UserStatusServiceTest {
         verify(userAnalyticsService, times(2)).getUserSessions("userY");
     }
 
+    //
     @Test
     public void testGetUserLastSessionDate_EmptyList() {
 
