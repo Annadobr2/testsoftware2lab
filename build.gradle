@@ -1,5 +1,9 @@
 plugins {
     id 'java'
+
+    id 'jacoco'
+
+
 }
 
 group = 'org.usvm'
@@ -30,4 +34,20 @@ dependencies {
 
 test {
     useJUnitPlatform()
+
+    finalizedBy jacocoTestReport // чтобы отчёт строился после тестов
+}
+
+jacoco {
+    toolVersion = "0.8.10" // Можно указать и другую версию, но эта стабильная
+}
+
+
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.required = true
+        html.required = true
+    }
 }
