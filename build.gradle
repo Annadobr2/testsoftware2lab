@@ -3,7 +3,7 @@ plugins {
 
     id 'jacoco'
     id 'io.qameta.allure' version '2.11.2'
-
+    id 'com.github.spotbugs' version '5.0.14'
 
 }
 
@@ -57,5 +57,20 @@ allure {
     version = '2.20.1'
     autoconfigure = true
     aspectjweaver = true
+}
+spotbugs {
+    toolVersion = '4.7.3'
+    effort = 'max'
+    reportLevel = 'high'
+}
+
+tasks.register('spotbugsMain', com.github.spotbugs.snom.SpotBugsTask) {
+    classes = files("$buildDir/classes/java/main")
+    source = fileTree('src/main/java')
+    classpath = files()
+    reports {
+        html.required = true
+        html.outputLocation.set(file("$buildDir/reports/spotbugs/main.html"))
+    }
 }
 
