@@ -45,6 +45,7 @@ jobs:
           name: allure-report
           path: build/reports/allure-report
 
+
       - name: Deploy Allure report to GitHub Pages
         if: success()
         uses: peaceiris/actions-gh-pages@v4
