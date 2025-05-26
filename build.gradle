@@ -64,13 +64,11 @@ spotbugs {
     reportLevel = 'high'
 }
 
-tasks.register('spotbugsMain', com.github.spotbugs.snom.SpotBugsTask) {
-    classes = files("$buildDir/classes/java/main")
-    source = fileTree('src/main/java')
-    classpath = files()
+tasks.named("spotbugsMain") {
     reports {
         html.required = true
         html.outputLocation.set(file("$buildDir/reports/spotbugs/main.html"))
     }
 }
+
 
