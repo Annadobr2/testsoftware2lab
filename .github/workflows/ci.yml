@@ -6,7 +6,6 @@ on:
   pull_request:
     branches: [ main, master ]
 
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -45,15 +44,17 @@ jobs:
           name: allure-report
           path: build/reports/allure-report
 
+      - name: Copy Allure report to publish dir
+        run: |
+          mkdir -p publish
+          cp -r build/reports/allure-report/* publish/
 
       - name: Deploy Allure report to GitHub Pages
         if: success()
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: build/reports/allure-report/
-
-
+          publish_dir: publish
 
       - name: Archive test report
         if: always()
